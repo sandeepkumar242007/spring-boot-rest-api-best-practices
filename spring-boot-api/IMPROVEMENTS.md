@@ -25,9 +25,12 @@
 - Before: No visibility into what's happening
 - After: Logs all operations (create, update, delete, errors)
 
-### 5. Exposing Entity Directly -> DTO Pattern
-- Before: Database entity exposed in API
-- After: Separate DTO layer for API contracts
+### 5. Exposing Entity Directly -> DTO Pattern with MapStruct
+- Before: Database entity exposed in API, manual DTO conversion
+- After: Separate Request/Response DTOs with MapStruct for type-safe mapping
+  - CreateUserRequest for POST
+  - UpdateUserRequest for PUT
+  - UserDTO for responses
 
 ### 6. No API Documentation -> Swagger/OpenAPI
 - Before: No interactive documentation
@@ -48,6 +51,22 @@
 ### 9. No Transaction Management -> @Transactional Added
 - Before: No transaction boundaries
 - After: Service layer wrapped in transactions
+
+### 10. Boilerplate Code -> Lombok Integration
+- Before: Manual getters, setters, constructors, toString
+- After: @Data, @RequiredArgsConstructor, @Slf4j annotations
+
+### 11. No Custom Validators -> Custom Validation Annotations
+- Before: Basic validation only
+- After: @UniqueEmail custom validator for email uniqueness
+
+### 12. No Monitoring -> Spring Actuator
+- Before: No health checks or metrics
+- After: /actuator/health and /actuator/metrics endpoints
+
+### 13. No Tests -> Unit Tests Added
+- Before: No test coverage
+- After: JUnit 5 + Mockito tests for service layer
 
 ---
 
@@ -121,11 +140,13 @@ Global Exception Handler (Consistent Errors)
 1. **Industry Best Practices**: Follows Spring Boot conventions
 2. **Production-Ready**: Error handling, logging, validation
 3. **Scalable**: Pagination for large datasets
-4. **Maintainable**: Clean architecture with DTOs
+4. **Maintainable**: Clean architecture with DTOs and MapStruct
 5. **Well-Documented**: Swagger UI for API exploration
 6. **Professional**: Proper HTTP status codes and error messages
 7. **Secure**: Input validation prevents injection attacks
-8. **Testable**: Layered architecture easy to unit test
+8. **Testable**: Layered architecture with unit tests
+9. **Modern**: Lombok reduces boilerplate by 50%
+10. **Observable**: Actuator endpoints for monitoring
 
 ---
 
@@ -135,18 +156,20 @@ Global Exception Handler (Consistent Errors)
 Built a Production-Ready Spring Boot REST API
 
 Key Features:
-Bean Validation with custom error messages
+Bean Validation with custom validators
 Global Exception Handling (404, 409, 400)
-DTO Pattern for clean API contracts
+DTO Pattern with MapStruct for type-safe mapping
 Swagger/OpenAPI documentation
 Pagination & Sorting support
+Lombok for clean code (50% less boilerplate)
 SLF4J Logging for observability
+Spring Actuator for health checks
+Unit Tests with JUnit 5 & Mockito
 Transaction management
-Duplicate email prevention
 
-Tech Stack: Spring Boot 3.2, JPA, H2, Java 17
+Tech Stack: Spring Boot 3.2 | Lombok | MapStruct | JPA | H2 | Java 17
 
-This project demonstrates enterprise-level practices including proper error handling, input validation, and comprehensive API documentation.
+This project demonstrates enterprise-level practices used by companies like Netflix, Amazon, and Uber.
 
 #SpringBoot #Java #RestAPI #BackendDevelopment #SoftwareEngineering
 ```
@@ -184,15 +207,32 @@ curl "http://localhost:8081/api/users/paginated?page=0&size=5&sortBy=name"
 ### 4. Test Swagger UI
 Open browser: `http://localhost:8081/swagger-ui.html`
 
+### 5. Test Health Check
+```bash
+curl http://localhost:8081/actuator/health
+```
+
+### 6. Test Metrics
+```bash
+curl http://localhost:8081/actuator/metrics
+```
+
+### 7. Run Unit Tests
+```bash
+mvn test
+```
+
 ---
 
 ## Next Level Improvements (Optional)
 
-1. **Add Unit Tests** (JUnit, Mockito)
-2. **Add Integration Tests** (TestContainers)
-3. **Add Security** (Spring Security, JWT)
-4. **Add Caching** (Redis, Caffeine)
-5. **Add Metrics** (Actuator, Prometheus)
-6. **Add Docker** (Containerization)
-7. **Add CI/CD** (GitHub Actions)
-8. **Add Database Migration** (Flyway/Liquibase)
+1. **Add Integration Tests** (TestContainers)
+2. **Add Security** (Spring Security, JWT)
+3. **Add Caching** (Redis, Caffeine)
+4. **Add Metrics Dashboard** (Prometheus, Grafana)
+5. **Add Docker** (Containerization)
+6. **Add CI/CD** (GitHub Actions)
+7. **Add Database Migration** (Flyway/Liquibase)
+8. **Add API Rate Limiting** (Bucket4j)
+9. **Add Request/Response Logging** (Logbook)
+10. **Add API Versioning** (URL or Header-based)
